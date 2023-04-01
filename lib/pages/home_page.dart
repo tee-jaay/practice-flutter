@@ -1,3 +1,4 @@
+import 'package:coff/util/coffe_type.dart';
 import 'package:coff/util/coffee_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +11,36 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // list of coffee types
+  final List coffeeTypes = [
+    [
+      'Cappuccino',
+      true,
+    ],
+    [
+      'Latte',
+      false,
+    ],
+    [
+      'Black',
+      false,
+    ],
+    [
+      'Tea',
+      false,
+    ],
+  ];
+
+  // user coffee type select
+  void coffeeTypeSelected(int index) {
+    setState(() {
+      for (int i = 0; i < coffeeTypes.length; i++) {
+        coffeeTypes[i][1] = false;
+      }
+      coffeeTypes[index][1] = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,6 +53,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // find best coffee for you
           Padding(
@@ -29,14 +61,14 @@ class _HomePageState extends State<HomePage> {
               horizontal: 24,
             ),
             child: Text(
-              'Find the best coffee for you',
+              'Find the best coffee \nfor you',
               style: GoogleFonts.bebasNeue(
-                fontSize: 48,
+                fontSize: 42,
               ),
             ),
           ),
           const SizedBox(
-            height: 24,
+            height: 16,
           ),
           // search bar
           Padding(
@@ -55,13 +87,50 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           const SizedBox(
-            height: 24,
+            height: 16,
+          ),
+          Container(
+            height: 32.0,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: coffeeTypes.length,
+              itemBuilder: (context, index) {
+                return CoffeeType(
+                  coffeeType: coffeeTypes[index][0],
+                  isSelelcted: coffeeTypes[index][1],
+                  onTap: () => coffeeTypeSelected(index),
+                );
+              },
+            ),
           ),
           Expanded(
               child: ListView(
             scrollDirection: Axis.horizontal,
-            children: [
-              CoffeeTile(),
+            children: const [
+              CoffeeTile(
+                coffeeName: 'Latte',
+                coffeeDescription: 'with almond milk',
+                coffeeImage: 'lib/images/image1.jpg',
+                coffeePrice: '4.53',
+              ),
+              CoffeeTile(
+                coffeeName: 'Cappuccino',
+                coffeeDescription: 'with almond milk',
+                coffeeImage: 'lib/images/image2.jpg',
+                coffeePrice: '7.53',
+              ),
+              CoffeeTile(
+                coffeeName: 'Black',
+                coffeeDescription: 'with almond milk',
+                coffeeImage: 'lib/images/image3.jpg',
+                coffeePrice: '6.01',
+              ),
+              CoffeeTile(
+                coffeeName: 'Tea',
+                coffeeDescription: 'with almond milk',
+                coffeeImage: 'lib/images/image4.jpg',
+                coffeePrice: '8.53',
+              ),
             ],
           ))
           // horizontal list view
